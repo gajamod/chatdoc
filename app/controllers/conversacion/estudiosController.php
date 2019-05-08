@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No se permite acceso directo');
 
-class estudiosController extends Controller
+class conversacionController extends Controller
 {
   /**
    * string 
