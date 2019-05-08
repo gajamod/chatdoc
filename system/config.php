@@ -43,19 +43,19 @@ define('DEFAULT_CONTROLLER', 'home');
 // Valores de base de datos
 /////////////////////////////////////
 
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_DATABASE', 'neuroprueba');
-define('DB_PASSWORD', 'hpaxn521');
+define('DB_SERVER', 'soporteyventas.com');
+define('DB_USERNAME', 'soport16_chatdoc');
+define('DB_DATABASE', 'soport16_chatdoc');
+define('DB_PASSWORD', 'ChatUser123@');
 define('APPCHARSET', 'utf8');
 //////////////////////////////////////
 // Valores configuracion
 /////////////////////////////////////
-define("BASE_URL", "http://172.24.160.145:8080/neuropediatria/");//Siempre debe finalizar en '/'
+define("BASE_URL", "http://localhost/chatdoc/");//Siempre debe finalizar en '/'
 define("LOGIN_URL", BASE_URL."login/");
 
 
-define("APPNAME", "Neuropediatria");
+define("APPNAME", "ChatDoc");
 define("no-reply","no-reply@soporteyventas.com");
 define("CONTACTO","contacto@soporteyventas.com");
 
