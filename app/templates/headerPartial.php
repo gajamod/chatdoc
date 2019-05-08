@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand p-0 m-0" href="<?php echo BASE_URL ?>"><img src="img/logo1.png" width="90" height="90" class="d-inline-block align-top p-0 m-0" alt="Neuropediatria" min-width="175px" id="hlogoi"></a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand p-0 m-0" href="<?php echo BASE_URL ?>"><img src="img/logo1.png" width="" height="50" class="d-inline-block align-top p-0 mr-5" alt="Neuropediatria" min-width="175px" id="hlogoi"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSVA" aria-controls="navbarSVA" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
