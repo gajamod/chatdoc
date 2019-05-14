@@ -35,7 +35,7 @@ class Session
 		return md5(time()+$cad);
 	}
 
-	public static function startSession($idU,$apodo,$admin,$token){
+	public static function startSession($idU,$apodo,$token){
 		if (self::is_session_started()) {
 		 	self::closeSession();
 		 } 
@@ -43,13 +43,11 @@ class Session
 		    'cookie_lifetime' => 14400
 		    //'read_and_close'  => true,
 		]);
-		$_SESSION['idE']=$idU;
+		$_SESSION['id']=$idU;
 		$_SESSION['apodo']=$apodo;
-		$_SESSION['admin']=$admin;
-		$_SESSION['tokenE']=$token;
-		$queryRegistrar="UPDATE `personal` SET `token`=? WHERE `id`=?;";
-		$args=[$_SESSION['tokenE'],$_SESSION['idE']];
-		$resultados=afectados_pdo($queryRegistrar,$args);
+		$_SESSION['token']=$token;
+		$queryRegistrar="UPDATE `pacientes` SET `token`=? WHERE `id`=?";
+		$resultados=afectados_query($queryRegistrar,'si',$_SESSION['tokenE'],$_SESSION['idE']);
 		//
 		if ($resultados==1) {
 			return self::valid_session();
@@ -64,14 +62,13 @@ class Session
 
 	public static function valid_session(){
 		if (self::is_session_started()) {
-			if (isset($_SESSION['idE']) and isset($_SESSION['tokenE']) and  isset($_SESSION['apodo'])) {
-				$id=$_SESSION['idE'];
-				$token=$_SESSION['tokenE'];
+			if (isset($_SESSION['id']) and isset($_SESSION['token']) and  isset($_SESSION['apodo'])) {
+				$id=$_SESSION['id'];
+				$token=$_SESSION['token'];
 				$apodo=$_SESSION['apodo'];
-				$queryVerificar="SELECT `id` FROM `personal` WHERE `id`=? and `token`=? and `activo`=1;";
-				$args=[$id,$token];
-				$results = resultados_pdo($queryVerificar,$args);
-				$cant=$results->rowCount();
+				$queryVerificar="SELECT `id` FROM `pacientes` WHERE `id`=? and token=?;";
+				$results = resultados_query($queryVerificar,'is',$id,$token);
+				$cant=mysqli_num_rows($results);
 				if ($cant == 1) {
 					return true;
 				}else{
@@ -107,11 +104,33 @@ class Session
 		}		
 		//
 	}
+
+	//sin permisos
+	public static function requiere_sesion($sesion=true,$redireccionar=true){
+		if ($sesion) {
+			if (self::valid_session()) {
+			 	return true;
+			 } else {
+			 	if ($redireccionar) {
+			 		return self::redireccionarLogin();
+			 	} else {
+			 		return false;
+			 	}
+			 	
+			 }
+			  
+		}else{
+			return true;
+		}
+		
+	}
+
+	/* //con permisos
 	public static function requiere_sesion($sesion=true,$permisos=true,$redireccionar=true){
 		if ($permisos) {
 			$usuario=new usersModel();
 			if (self::valid_session()) {
-				if ($usuario->tiene_permiso($_SESSION['idE'])) {
+				if ($usuario->tiene_permiso($_SESSION['id'])) {
 					return true;
 				} else {
 					return false;
@@ -142,6 +161,7 @@ class Session
 		}
 		
 	}
+	*/
 
 }
  ?>
