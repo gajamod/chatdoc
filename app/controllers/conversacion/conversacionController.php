@@ -32,8 +32,29 @@ class conversacionController extends Controller
 
   public function show($params)
   {
-    $this->sesion_permisos=false;
+    //si post con param validos, registra respuesta luego
+    //recibe el numero de conversacion y la muestra
+    // si no existe muestra error
+
     $this->render(__CLASS__,null, $params); 
+  }
+  public function nuevo($params)
+  {
+    $chck = array(
+    'nombre' => 's',
+    'descripcion' => 's'
+    );
+    if (checkPost($chck,$_POST)) {
+      $id_estudio=estudiosModel::crear($_POST['nombre'],$_POST['area'],$_POST['descripcion']);
+      if (is_numeric($id_estudio) and $id_estudio>0) {
+        header("location: ".BASE_URL."estudios/modificar/".$id_estudio);
+      }else{
+        $params['msg'] = "Error al crear el estudio";
+        $this->render(__CLASS__,"back", $params);
+      }
+    }else{
+      $this->render(__CLASS__,"crear", $params);
+    }
   }
 
   public function tomar($params)
@@ -104,78 +125,9 @@ class conversacionController extends Controller
       $this->render(__CLASS__,"back", $params);
     }
   }
-  public function crear($params)
-  {
-    $chck = array(
-    'nombre' => 's',
-    'descripcion' => 's'
-    );
-    if (checkPost($chck,$_POST)) {
-      $id_estudio=estudiosModel::crear($_POST['nombre'],$_POST['area'],$_POST['descripcion']);
-      if (is_numeric($id_estudio) and $id_estudio>0) {
-        header("location: ".BASE_URL."estudios/modificar/".$id_estudio);
-      }else{
-        $params['msg'] = "Error al crear el estudio";
-        $this->render(__CLASS__,"back", $params);
-      }
-    }else{
-      $this->render(__CLASS__,"crear", $params);
-    }
-  }
-
-  public function modificar($params)
-  {
-    if (estudiosModel::exist($params[0])) {
-      $id_estud=$params[0];
-      $param['data']=estudiosModel::getData($id_estud);
-      $this->render(__CLASS__,"modificar", $param);
-    }else{
-      $params['msg'] = "No se ha encontrado el estudio";
-      $this->render(__CLASS__,"back", $params);
-    }
-  }
 
 
 
-  public function mostrarCategorias($categorias,$nivel=0,$tomar=false){
-    foreach ($categorias as $idCategoria => $datosCategoria) {
-      $datosCategoria['idCategoria']=$idCategoria;
-      $this->mostrarCategoria($datosCategoria,$nivel,$tomar);
-    }
-  }
-  public function mostrarCategoria($datosCategoria,$nivel=0,$tomar=false){
-    $datosCategoria['nivel']=$nivel;
-    $datosCategoria['tomar']=$tomar;
-    $this->renderPartial(__CLASS__,"categoriaPartial", $datosCategoria);
-  }
-  public function mostrarPreguntas($preguntas,$nivel=0,$tomar=false){
-    if (is_array($preguntas)) {
-      echo '<div class="row">';
-        foreach ($preguntas as $idPregunta => $datosPregunta) {
-          echo '<div class="col-lg-4 col-sm-6">';
-            $datosPregunta['idPregunta']=$idPregunta;
-            $this->mostrarPregunta($datosPregunta,$tomar);
-          echo "</div>";
-        }
-      echo "</div>";
-    }else{
-      
-      echo "<h4>Sin preguntas / respuestas :(</h4>";
-      
-      
-      //$this->mostrarPregunta($preguntas);
-    }
 
-      
-  }
-  public function mostrarPregunta($datosPregunta,$tomar=false){
-    if ($tomar) {
-      $this->renderPartial(__CLASS__,"preguntaTomarPartial", $datosPregunta);
-    }else{
-      $this->renderPartial(__CLASS__,"preguntaPartial", $datosPregunta);
-    }
-    
-  }
-    
 
 }
