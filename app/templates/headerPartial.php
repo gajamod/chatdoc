@@ -20,17 +20,6 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <?php if (Session::valid_session()): ?>
-        <?php if ($_SESSION['admin']==true): ?>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="ddmlPerfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-address-book"></i> Usuarios
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="ddmlPerfil">
-              <a class="dropdown-item" href="<?php echo BASE_URL; ?>login/lista">Ver usuarios</a>
-              <a class="dropdown-item" href="<?php echo BASE_URL; ?>login/registro">Nuevo Usuario</a>
-            </div>
-          </li>
-        <?php endif ?>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="ddmlPerfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-laugh-beam"></i> <?php echo $_SESSION['apodo']; ?>

@@ -2,7 +2,7 @@
 define('BASEPATH', true);
 require 'system/config.php';
 require 'system/core/autoload.php';
-require(LIBS_ROUTE.'PDOBDBF.php');
+require(LIBS_ROUTE.'BDBF.php');
 
 /**
  * Inicializa Router y detección de valores de la URI

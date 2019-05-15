@@ -32,7 +32,7 @@ class Session
 	}
 
 	public static function generateToken($cad=""){
-		return md5(time()+$cad);
+		return md5(time().$cad);
 	}
 
 	public static function startSession($idU,$apodo,$token){
@@ -47,7 +47,7 @@ class Session
 		$_SESSION['apodo']=$apodo;
 		$_SESSION['token']=$token;
 		$queryRegistrar="UPDATE `pacientes` SET `token`=? WHERE `id`=?";
-		$resultados=afectados_query($queryRegistrar,'si',$_SESSION['tokenE'],$_SESSION['idE']);
+		$resultados=afectados_query($queryRegistrar,'si',$_SESSION['token'],$_SESSION['id']);
 		//
 		if ($resultados==1) {
 			return self::valid_session();

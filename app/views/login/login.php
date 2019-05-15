@@ -16,10 +16,10 @@
                 <h3 class="form-title"><i class="fa fa-user"></i> Ingreso</h3>                 
             </div>
             <div class="form-group">
-              <label class="sr-only" for="nombre">Usuario</label>
+              <label class="sr-only" for="nombre">Correo</label>
               <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></div>
-                <input class="form-control" type="text" name="usuario" id="usuario" placeholder="Usuario">
+                <input class="form-control" type="text" name="usuario" id="usuario" placeholder="Correo">
               </div>
             </div>
             <div class="form-group">

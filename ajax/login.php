@@ -3,7 +3,7 @@
 	require '../system/config.php';
 	require '../system/core/autoload.php';
 	if (!function_exists('conectar')) {
-	  require('../'.LIBS_ROUTE."PDOBDBF.php");
+	  require('../'.LIBS_ROUTE."BDBF.php");
 	}
 	require "../".PATH_MODELS ."loginModel.php";
 	if (isset($_POST['us']) and isset($_POST['pw'])) {
