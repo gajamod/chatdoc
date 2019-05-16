@@ -1,15 +1,15 @@
 <?php defined('BASEPATH') or exit('No se permite acceso directo'); 
 	$this->title="Bienvenidos!";
-	
+	mose("params",$this->params);
 	$texto=$this->params['texto'];
-	$area=$this->params['area'];
+	$areaSelected=$this->params['area'];
 	$resultados=$this->params['resultados'];
-	mose("params",$resultados);
+	$dareas=$this->params['dareas'];
+
 ?>
 
-<div class="card-deck p-3">
 
-	<div class="card bg-secondary">
+	<div class="card bg-secondary rounded-left">
 		<div class="card-body">
 			<form class="form-inline" action="home/">
 			  <div class="form-group mx-sm-3 mb-2">
@@ -18,10 +18,10 @@
 			  </div>
 			  <div class="form-group ">
 		    	<label for="nEstudio">Area</label>
-		    	<select class="form-control form-control-lg" name="estudio">
+		    	<select class="form-control form-control-lg" name="a" id="nEstudio">
 		    		<option>Todas</option>
-				  <?php foreach ($estudiosDisponibles as $key => $disponible): ?>
-				  	<option value="<?php echo $disponible['id']; ?>"><?php echo $disponible['nombre'].'| '.$disponible['area']; ?></option>
+				  <?php foreach ($dareas as $id => $area): ?>
+				  	<option value="<?php echo $id; ?>" <?php echo ($areaSelected==$id)? "selected":'' ?>><?php echo $area['']; ?></option>
 				  <?php endforeach ?>
 				</select>
 			</div>
@@ -29,23 +29,32 @@
 			</form>
 		</div>
 	</div>
-	<!--
-	<div class="card text-center">
-		<div class="card-body">
-	    <h5 class="card-title">Alta Neuropediatria</h5>
-	    <p class="card-text">Para poder registrar al nuevo paciente complete el siguiente formulario.</p>
-	    <a href="alta/" class="btn btn-primary">Alta</a>
-	  </div>
-	</div>
-	<div class="card text-center">
-		<div class="card-body">
-	    <h5 class="card-title">Estadisticas Pacientes</h5>
-	    <p class="card-text">Vea estadisticas de los Pacientes. </p>
-	    <a href="estadisticas/" class="btn btn-primary">Estadisticas</a>
-	  </div>
-	</div>
-	-->
+
+
+		
+<div class="card border-0">
+	<?php if ($resultados==0): ?>
+		<h3>No se han encontrado resultados</h3>
+	<?php else: ?>
+		<h5>Resultados: <?php echo $resultados['cantidad']; ?></h5>
+		<table class="table">
+			<?php foreach ($resultados['registros'] as $id => $r): ?>
+				<tr>
+					<td>
+						<?php echo $r['motivo']; ?>
+					</td>
+					<td>
+						<?php echo $r['fecha']; ?>
+					</td>
+					<td>
+						<?php echo $r['nombre_area']; ?>
+					</td>
+					<td>
+						<?php echo $r['estatus']; ?>
+					</td>
+				</tr>
+			<?php endforeach ?>
+		</table>
+	<?php endif ?>
 </div>
-		
-		
 		
