@@ -21,7 +21,7 @@
 		    	<select class="form-control form-control-lg" name="a" id="nEstudio">
 		    		<option>Todas</option>
 				  <?php foreach ($dareas as $id => $area): ?>
-				  	<option value="<?php echo $id; ?>" <?php echo ($areaSelected==$id)? "selected":'' ?>><?php echo $area['']; ?></option>
+				  	<option value="<?php echo $id; ?>" <?php echo ($areaSelected==$id)? "selected":'' ?>><?php echo $area; ?></option>
 				  <?php endforeach ?>
 				</select>
 			</div>
@@ -37,24 +37,33 @@
 		<h3>No se han encontrado resultados</h3>
 	<?php else: ?>
 		<h5>Resultados: <?php echo $resultados['cantidad']; ?></h5>
-		<table class="table">
+		<div class="row">
 			<?php foreach ($resultados['registros'] as $id => $r): ?>
-				<tr>
-					<td>
-						<?php echo $r['motivo']; ?>
-					</td>
-					<td>
-						<?php echo $r['fecha']; ?>
-					</td>
-					<td>
-						<?php echo $r['nombre_area']; ?>
-					</td>
-					<td>
+				<?php 
+
+				switch ($r['num_area']) {
+				 	case 1:
+				 		$borde='primary';
+				 		break;
+				 	
+				 	default:
+				 		$borde='dark';
+				 		break;
+				 } ?>
+				<div class="card col-md-4">
+					<div class="card-body">
+						<h3 class="card-title"><?php echo $r['motivo']; ?></h3>
+						<h4 class="card-subtitle mb-2 text-muted"><?php echo $r['nombre_area']; ?></h4>
+						<hr class="bg-secondary">
+						
 						<?php echo $r['estatus']; ?>
-					</td>
-				</tr>
+						<span class="border border-primary"></span>
+						<h5><small><?php echo $r['fecha']; ?></small></h5>
+					</div>
+				</div>
 			<?php endforeach ?>
-		</table>
+		</div>
+		
 	<?php endif ?>
 </div>
 		
