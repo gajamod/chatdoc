@@ -68,6 +68,50 @@ class conversacionModel
 
   public static function busquedaHilo($text='',$area=null){
     //Obtiene informacion de los hilos del paciente
+    $text='%'.htmlentities($text).'%';
+    if (Session::valid_session()) {
+      $paciente=$_SESSION['id'];
+      if (is_numeric($area) and $area>=1) {
+        $query="SELECT h.id,h.motivo,h.area,a.nombre as 'nombre_area',h.fechacreacion,h.estatus  
+          FROM hilos h
+          inner join soport16_chatdoc.areas a on h.area=a.id
+          WHERE h.paciente=? and (h.area=?) and h.motivo like ?";
+        $results=resultados_query($query,'iis',$paciente,$area,$text);
+      } else {
+        $query="SELECT h.id,h.motivo,h.area,a.nombre as 'nombre_area',h.fechacreacion,h.estatus 
+          FROM hilos h
+          inner join soport16_chatdoc.areas a on h.area=a.id
+          WHERE h.paciente=? and h.motivo like ?";
+        $results=resultados_query($query,'is',$paciente,$text);
+      }
+      $cant=mysqli_num_rows($results);
+      if ($cant>=1) {
+        $hilos = array();
+        $hilos['cantidad']=$cant;
+        while ($r=mysqli_fetch_array($results)) {
+          $hilos['resultados'][$r['id']]= array(
+                'motivo' => $r['motivo']
+                ,'fecha' => $r['fechacreacion']
+                ,'nombre_area' => $r['nombre_area']
+                ,'num_area' => $r['area']
+                ,'estatus' => $r['estatus']
+              );
+          
+        }
+        return $hilos;
+      } else {
+        return 0;
+      }
+      
+        
+    } else {
+      return -4;
+    }
+    
+    /*
+    foreach:
+    [idHilo]={area, estatus,motivo}
+    */
   }
   public static function getAreas(){
     //obtiene Areas disponibles para consulta
@@ -82,8 +126,10 @@ class conversacionModel
       is_int(intval($chat))
     ) {
       $query="";
+      /*
       $results=//resultados encontrados
       $cant=//cant resultados encontrados
+      */
       if ( $cant== 1 ) {
         return true;
        }else{

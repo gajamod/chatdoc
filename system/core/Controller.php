@@ -17,8 +17,7 @@ class Controller
    */
   public function render($controller_name = '',$opcion=null, $params = array())
   {
-    if (Session::requiere_sesion($this->sesion_valida,$this->sesion_permisos,$this->sesion_redireccionar)) {
-
+    if (Session::requiere_sesion($this->sesion_valida,$this->sesion_redireccionar)) {
       $this->view = new View($controller_name,$opcion, $params);
       echo $this->view->render();
    }else{

@@ -21,24 +21,27 @@ class homeController extends Controller
    */
   public function __construct()
   {
-    //$this->model = new homeModel();
+    $this->model = new conversacionModel();
     
   }
 
   /**
   * Método estándar
   */
-  public function index()
+  public function index($params)
   {
 
-    $this->show();
+    $this->show($params);
   }
 
-  public function show()
+  public function show($params)
   {
-    $this->sesion_permisos=false;
-    $params = array('nombre' => $this->nombre);
-    $this->render(__CLASS__,null, $params); 
+    $texto=isset($_GET['t'])?htmlentities($_GET['t']):'';
+    $area=isset($_GET['a'])?htmlentities($_GET['a']):null;
+    $param['resultados']=$this->model->busquedaHilo($texto,$area);
+    $param['area']=$area;
+    $param['texto']=$texto;
+    $this->render(__CLASS__,null, $param); 
   }
 
 
