@@ -89,7 +89,7 @@ class conversacionModel
         $hilos = array();
         $hilos['cantidad']=$cant;
         while ($r=mysqli_fetch_array($results)) {
-          $hilos['resultados'][$r['id']]= array(
+          $hilos['registros'][$r['id']]= array(
                 'motivo' => $r['motivo']
                 ,'fecha' => $r['fechacreacion']
                 ,'nombre_area' => $r['nombre_area']
@@ -119,19 +119,14 @@ class conversacionModel
     $results=resultados_query($query,"");
     $cant=mysqli_num_rows($results);
       if ($cant>=1) {
-        $hilos = array();
-        $hilos['cantidad']=$cant;
+        $areas = array();
         while ($r=mysqli_fetch_array($results)) {
-          $hilos['resultados'][$r['id']]= array(
-                'motivo' => $r['motivo']
-                ,'fecha' => $r['fechacreacion']
-                ,'nombre_area' => $r['nombre_area']
-                ,'num_area' => $r['area']
-                ,'estatus' => $r['estatus']
-              );
-          
+          $areas[$r['id']]=$r['nombre'];
         }
-        return $hilos;
+        return $areas;
+      }else{
+        return false;
+      }
   }
 
   public function existeConversacion($chat){

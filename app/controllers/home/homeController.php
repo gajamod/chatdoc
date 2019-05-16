@@ -41,6 +41,7 @@ class homeController extends Controller
     $param['resultados']=$this->model->busquedaHilo($texto,$area);
     $param['area']=$area;
     $param['texto']=$texto;
+    $param['dareas']=conversacionModel::getAreas();
     $this->render(__CLASS__,null, $param); 
   }
 
