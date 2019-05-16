@@ -1,8 +1,10 @@
 <?php defined('BASEPATH') or exit('No se permite acceso directo'); 
 	$this->title="Bienvenidos!";
-	mose("params",$this->params);
+	
 	$texto=$this->params['texto'];
 	$area=$this->params['area'];
+	$resultados=$this->params['resultados'];
+	mose("params",$resultados);
 ?>
 
 <div class="card-deck p-3">

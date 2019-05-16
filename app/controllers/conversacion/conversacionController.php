@@ -18,7 +18,7 @@ class conversacionController extends Controller
    */
   public function __construct()
   {
-    $this->model = new estudiosModel();
+    $this->model = new conversacionModel();
     
   }
 

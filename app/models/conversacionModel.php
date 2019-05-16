@@ -115,7 +115,23 @@ class conversacionModel
   }
   public static function getAreas(){
     //obtiene Areas disponibles para consulta
-
+    $query="SELECT id, nombre FROM areas";
+    $results=resultados_query($query,"");
+    $cant=mysqli_num_rows($results);
+      if ($cant>=1) {
+        $hilos = array();
+        $hilos['cantidad']=$cant;
+        while ($r=mysqli_fetch_array($results)) {
+          $hilos['resultados'][$r['id']]= array(
+                'motivo' => $r['motivo']
+                ,'fecha' => $r['fechacreacion']
+                ,'nombre_area' => $r['nombre_area']
+                ,'num_area' => $r['area']
+                ,'estatus' => $r['estatus']
+              );
+          
+        }
+        return $hilos;
   }
 
   public function existeConversacion($chat){
