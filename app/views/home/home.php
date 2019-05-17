@@ -18,7 +18,7 @@
 			  </div>
 			  <div class="form-group ">
 		    	<select class="form-control form-control-lg" name="a">
-		    		<option>--- Area ---</option>
+		    		<option value="">--- Area ---</option>
 				  <?php foreach ($dareas as $id => $area): ?>
 				  	<option value="<?php echo $id; ?>" <?php echo ($areaSelected==$id)? "selected":'' ?>><?php echo $area; ?></option>
 				  <?php endforeach ?>
