@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No se permite acceso directo'); 
 	$this->title="Bienvenidos!";
-	mose("params",$this->params);
+	//mose("params",$this->params);
 	$texto=$this->params['texto'];
 	$areaSelected=$this->params['area'];
 	$resultados=$this->params['resultados'];
@@ -14,12 +14,11 @@
 			<form class="form-inline" action="home/">
 			  <div class="form-group mx-sm-3 mb-2">
 			    <label for="namei" class="sr-only">Motivo</label>
-			    <input type="text" class="form-control" id="namei" placeholder="Motivo" name="t" value="<?php echo isset($texto)? $texto:''  ?>">
+			    <input type="text" class="form-control form-control-lg" id="namei" placeholder="Motivo" name="t" value="<?php echo isset($texto)? $texto:''  ?>">
 			  </div>
 			  <div class="form-group ">
-		    	<label for="nEstudio">Area</label>
-		    	<select class="form-control form-control-lg" name="a" id="nEstudio">
-		    		<option>Todas</option>
+		    	<select class="form-control form-control-lg" name="a">
+		    		<option>--- Area ---</option>
 				  <?php foreach ($dareas as $id => $area): ?>
 				  	<option value="<?php echo $id; ?>" <?php echo ($areaSelected==$id)? "selected":'' ?>><?php echo $area; ?></option>
 				  <?php endforeach ?>
@@ -43,22 +42,44 @@
 
 				switch ($r['num_area']) {
 				 	case 1:
+				 		$borde='info';
+				 		break;
+				 	case 2:
+				 		$borde='danger';
+				 		break;
+				 	case 3:
 				 		$borde='primary';
+				 		break;
+				 	case 1:
+				 		$borde='secondary';
+				 		break;
+				 	case 1:
+				 		$borde='dark';
+				 		break;
+				 	default:
+				 		$borde='default';
+				 		break;
+				 } 
+
+
+				 switch ($r['estatus']) {
+				 	case 1:
+				 		$estat='success';
+				 		$estatT="Activo";
 				 		break;
 				 	
 				 	default:
-				 		$borde='dark';
+				 		$estat='warning';
+				 		$estatT="Cerrado";
 				 		break;
-				 } ?>
+				 } 
+				 
+				 	?>
 				<div class="card col-md-4">
 					<div class="card-body">
-						<h3 class="card-title"><?php echo $r['motivo']; ?></h3>
-						<h4 class="card-subtitle mb-2 text-muted"><?php echo $r['nombre_area']; ?></h4>
-						<hr class="bg-secondary">
-						
-						<?php echo $r['estatus']; ?>
-						<span class="border border-primary"></span>
-						<h5><small><?php echo $r['fecha']; ?></small></h5>
+						<h3 class="card-title"><a><?php echo $r['motivo']; ?></a> <a class=" float-right btn btn-<?php echo $estat; ?> disabled text-white"><?php echo $estatT; ?></a></h3>
+						<h4 class="card-subtitle mb-2 text-muted"><a><?php echo $r['nombre_area']; ?></a> <small class="text-right float-right"><?php echo $r['fecha']; ?></small></h4>
+						<hr class="bg-<?php echo $borde; ?>">
 					</div>
 				</div>
 			<?php endforeach ?>
