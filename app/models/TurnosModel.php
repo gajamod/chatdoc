@@ -58,8 +58,7 @@ class TurnosModel //extends Model
         return true;
       }
       return false;
-    }else{
-    
+    }else{    
     return false;
     }
   }
