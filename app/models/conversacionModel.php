@@ -13,19 +13,13 @@ class conversacionModel{
         //Si la sesion no es valida
         if (Session::valid_session()){
             //Si existe token y area valida
-            $query = "SELECT * FROM areas WHERE nombre ILIKE ?";
-            $retrievedArea = datos_fila($query, 'is', $area);
-            $query = "SELECT 'token' FROM pacientes WHERE token ILIKE ?";
-            $retrievedToken = datos_fila($query, 'is', $area);
-
-            if (!is_null($retrievedArea) && !is_null($retrievedToken)){
+            if ($this->areaValida($area) and !($this->existeTokenConversacion($token)) ){
                 //Crear conversacion (hilo) (Tomar datos de sesion existente)
-                $query = "INSERT INTO 'hilos' ('motivo', 'area', 'descripcion', 'paciente') VALUES (?,?,?,?)";
-                $idc = id_query($query, 'sisi', $motivo, $area, $descripcion, $paciente);
-//HACER CONSULTA EN DB INSERT INTO 'hilos' ('motivo', 'area', 'descripcion', 'paciente') VALUES ('enfermedad', 'general', 'Me siento malito', 'gama')
+                $query = "INSERT INTO 'hilos' ('motivo', 'area', 'descripcion', 'paciente',token) VALUES (?,?,?,?,?)";
+                $idc = id_query($query, 'sisis', $motivo, $area, $descripcion, $paciente,$token);
                 //Si se creo la conversacion
-                if (!is_null($idc)){
-                    return $idConversacion;
+                if (is_numeric($idc) and $idc>0){
+                    return $idc;
                 }else{
                     return -3;
                 }
@@ -52,6 +46,28 @@ class conversacionModel{
         //         return -3
         // Else
         //     return -4
+
+        if (Session::valid_session()) {
+            if ($this->existeConversacion($conversacion,$paciente)) {
+                if (!($this->existeTokenRespuesta($token,$conversacion))) {
+                    $query="INSERT INTO `respuestas`( `hilo`, `respuesta`,`paciente`,`token`) VALUES (?,?,?,?);";
+                    $id=id_query($query,"isis",$conversacion,$respuesta,$paciente,$token);
+                    if (is_numeric($id) and $id>0) {
+                        return $id;
+                    } else {
+                        return -3
+                    }
+                    
+                } else {
+                    return -2;
+                }
+            } else {
+               return -2;
+            }
+        } else {
+            return -4;
+        }
+        
     }
 
     public function getConversacion($registro){
@@ -67,6 +83,36 @@ class conversacionModel{
         foreach:
         [id_respuesta]={'respuesta','tipo','nombre'(paciente o dr segun caso),'fecha'}
         **/
+        $query="SELECT r.`id`, `respuesta`, r.`paciente`, r.`medico`, r.`fecha_registro`,p.nombre AS 'n_pac',m.nombre AS 'n_dr'
+                FROM `respuestas` r
+                LEFT JOIN pacientes p ON r.paciente=p.id
+                LEFT JOIN medicos m ON r.medico=m.id
+                WHERE `hilo`=?";
+        $results=resultados_query($query,"i",$conversacion);
+        $cant=mysqli_num_rows($results);
+        if ($cant>=1) {
+            $resp = array();
+            $resp['cantidad']=$cant;
+            while ($r=mysqli_fetch_array($results)) {
+                if (is_numeric($r['medico'] ) and $r['medico']>0) {
+                    $nom=$r['n_dr'];
+                    $tip=1;
+                } else {
+                    $nom=$r['n_pac'];
+                    $tip=0;
+                }
+                $resp['registros'][$r['id']]= array(
+                    'respuesta' => $r['respuesta']
+                    ,'fecha' => $r['fecha_registro']
+                    ,'tipo' => $tip
+                    ,'nombre'=> $nom
+                );
+            }
+            return $resp;
+        } else {
+            return 0;
+        }
+
     }
 
     public static function busquedaHilo($text='',$area=null){
@@ -149,6 +195,43 @@ class conversacionModel{
 
     private function areaValida($area){
         //verifica que el area sea valida
+        if (is_numeric($area) and $area>0) {
+            $query = "SELECT `id`, `nombre` FROM `areas` WHERE `id`=?";
+            $results = resultados_query($query, 'i', $area);
+            $cant=mysqli_num_rows($results);
+            if ($cant>=1) {
+                return true;
+            }else{
+                return false;
+            }
+        } else {
+            return false;
+        }       
+    }
+    private function existeTokenConversacion($token){
+        //verifica si el token de la conversacion existe
+            $query = "SELECT `id` FROM `hilos` WHERE `token`=?";
+            $results = resultados_query($query, 's', $token);
+            $cant=mysqli_num_rows($results);
+            if ($cant>=1) {
+                return true;
+            }else{
+                return false;
+            }
+     
+    }
+
+    private function existeTokenRespuesta($token,$conversacion){
+        //verifica si el token de la conversacion existe
+            $query = "SELECT `id` FROM `hilos` WHERE `token`=?";
+            $results = resultados_query($query, 's', $token);
+            $cant=mysqli_num_rows($results);
+            if ($cant>=1) {
+                return true;
+            }else{
+                return false;
+            }
+     
     }
 
     public function getInfo($conversacion){
