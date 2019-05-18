@@ -44,6 +44,7 @@ class conversacionController extends Controller
         );
       if (checkPost($chck,$_POST) ) {
         //Registrar respuesta
+        //rediridir a conversacion
       } 
 
       //mostrar conversacion
