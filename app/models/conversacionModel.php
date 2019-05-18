@@ -55,10 +55,10 @@ class conversacionModel{
                     if (is_numeric($id) and $id>0) {
                         return $id;
                     } else {
-                        return -3
+                        return -3;
                     }
                     
-                } else {
+                }else {
                     return -2;
                 }
             } else {
@@ -72,9 +72,14 @@ class conversacionModel{
 
     public function getConversacion($registro){
         //obtiene todos los datos de la conversacion, incluyendo los respuestas
-        $conversacion['info']=$this->getInfo($registro);
-        $conversacion['respuestas']=$this->getRespuestas($registro);
-        return $conversacion;
+        if ($this->existeConversacion($registro)) {
+            $conversacion['info']=$this->getInfo($registro);
+            $conversacion['respuestas']=$this->getRespuestas($registro);
+            return $conversacion;
+        } else {
+            return false;
+
+        }
     }
 
     private function getRespuestas($conversacion){
@@ -175,19 +180,24 @@ class conversacionModel{
         }
     }
 
-    public function existeConversacion($chat){
+    public function existeConversacion($chat,$paciente=null){
         //TODO: completar funcion ejemplo de verificacion de existencia
         if (is_numeric($chat) and $chat>0 and is_int(intval($chat))) {
-            $query="";
-            /*
-            $results=//resultados encontrados
-            $cant=//cant resultados encontrados
-            */
+            if (is_numeric($paciente) and $paciente>0) {
+                $query="SELECT `id` FROM `hilos` WHERE `id`=? and `paciente`=?";
+                $results = resultados_query($query, 'ii', $chat,$paciente);
+            } else {
+                $query = "SELECT `id` FROM `hilos` WHERE `id`=?";
+                $results = resultados_query($query, 'i', $chat);
+                
+            }
+            $cant=mysqli_num_rows($results);
             if ( $cant== 1 ) {
                 return true;
             }else{
                 return false;
             }
+            
         }else{
             return false;
         }

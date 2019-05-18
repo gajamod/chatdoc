@@ -35,8 +35,31 @@ class conversacionController extends Controller
     //si post con param validos, registra respuesta luego
     //recibe el numero de conversacion y la muestra
     // si no existe muestra error
+    if (Session::valid_session()) {
+      $chck = array(
+        'tkn' => 's'
+        ,'mot' => 's'
+        ,'ar' => 's'
+        ,'descr' => 's'
+        );
+      if (checkPost($chck,$_POST) ) {
+        //Registrar respuesta
+      } 
 
-    $this->render(__CLASS__,null, $params); 
+      //mostrar conversacion
+      if ($this->model->existeConversacion($params[0],$_SESSION['id'])){
+        $param['conversacion']=$this->model->getConversacion($params[0]);
+        $this->render(__CLASS__,null, $param);
+      } else {
+        $params['msg'] = "No se encontro la conversacion";
+        $this->render(__CLASS__,"back", $params);
+      }
+    } else {
+      $params['msg'] = "No tienes permiso de estar aqui";
+      $this->render(__CLASS__,"back", $params);
+    }
+    
+
   }
   public function nueva($params)
   {
