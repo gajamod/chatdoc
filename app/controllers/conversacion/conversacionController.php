@@ -38,7 +38,7 @@ class conversacionController extends Controller
 
     $this->render(__CLASS__,null, $params); 
   }
-  public function nuevo($params)
+  public function nueva($params)
   {
     $chck = array(
     'nombre' => 's',
@@ -53,7 +53,8 @@ class conversacionController extends Controller
         $this->render(__CLASS__,"back", $params);
       }
     }else{
-      $this->render(__CLASS__,"crear", $params);
+      $param['dareas']=conversacionModel::getAreas();
+      $this->render(__CLASS__,"nueva", $param);
     }
   }
 

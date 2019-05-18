@@ -12,7 +12,7 @@
         <a class="nav-link" href="<?php echo BASE_URL ?>">Inicio</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link btn btn-info" href="<?php echo BASE_URL ?>pacientes">Nueva Consulta</a>
+        <a class="nav-link btn btn-info" href="<?php echo BASE_URL ?>conversacion/nueva">Nueva Consulta</a>
       </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="#">Estadisticas</a>
