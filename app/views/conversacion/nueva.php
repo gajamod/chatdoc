@@ -19,7 +19,7 @@
 						<label class="sr-only" for="mot">Motivo / Titulo</label>
 						<div class="input-group">
 	                        <div class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></div>
-						<input class="form-control form-control-lg" type="text" placeholder="Nombre Completo" name="mot" aarequired="required">
+						<input class="form-control form-control-lg" type="text" placeholder="Motivo / Titulo de la consulta" name="mot" aarequired="required">
 						</div>
 						<span class="help-block" id="error"></span>
 					</div>
@@ -39,7 +39,7 @@
 						<label class="sr-only" for="descr">Descripcion</label>
 						<div class="input-group">
 	                        <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-						<textarea class="form-control form-control-lg" name="descr" placeholder="Descripcion"></textarea>
+						<textarea class="form-control form-control-lg" name="descr" placeholder="Descripcion completa y Sintomas"></textarea>
 						</div>
 						<span class="help-block" id="error"></span>
 					</div>

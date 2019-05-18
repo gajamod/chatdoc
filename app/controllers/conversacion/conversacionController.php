@@ -41,11 +41,17 @@ class conversacionController extends Controller
   public function nueva($params)
   {
     $chck = array(
-    'nombre' => 's',
-    'descripcion' => 's'
+    'tkn' => 's'
+    ,'mot' => 's'
+    ,'ar' => 's'
+    ,'descr' => 's'
     );
-    if (checkPost($chck,$_POST)) {
-      $id_estudio=estudiosModel::crear($_POST['nombre'],$_POST['area'],$_POST['descripcion']);
+    if (checkPost($chck,$_POST) and Session::valid_session()) {
+      $token=htmlentities($_POST['tkn']);
+      $motivo=htmlentities($_POST['mot']);
+      $area=htmlentities($_POST['ar']);
+      $descripcion=htmlentities($_POST['descr']);
+      $id_estudio=$this->model->crearConversacion($_SESSION['id'],$token,$area,$motivo,$descripcion);
       if (is_numeric($id_estudio) and $id_estudio>0) {
         header("location: ".BASE_URL."estudios/modificar/".$id_estudio);
       }else{
