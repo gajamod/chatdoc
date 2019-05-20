@@ -37,14 +37,30 @@ class conversacionController extends Controller
     // si no existe muestra error
     if (Session::valid_session()) {
       $chck = array(
-        'tkn' => 's'
-        ,'mot' => 's'
-        ,'ar' => 's'
-        ,'descr' => 's'
+        'msj' => 's'
+        ,'cht' => 'i'
         );
       if (checkPost($chck,$_POST) ) {
         //Registrar respuesta
-        //rediridir a conversacion
+        $mensaje=htmlentities( $_POST['msj']);
+        $conversacion=htmlentities( $_POST['cht']);
+        $paciente=$_SESSION['id'];
+        $token=Session::generateToken($paciente);
+        if ($this->model->existeConversacion($conversacion,$paciente)) {
+          $resp=$this->model->registrarRespuesta($mensaje,$paciente,$token,$conversacion);
+          if ($resp>0) {
+            //header("location: ".$conversacion);
+          } else {
+            $params['msg'] = "Error al guardar el mensaje";
+          $this->render(__CLASS__,"back", $params);
+          }
+          
+        } else {
+          $params['msg'] = "Error al enviar el mensaje";
+          $this->render(__CLASS__,"back", $params);
+        }
+        
+        
       } 
 
       //mostrar conversacion
@@ -77,9 +93,9 @@ class conversacionController extends Controller
       $descripcion=htmlentities($_POST['descr']);
       $id_estudio=$this->model->crearConversacion($_SESSION['id'],$token,$area,$motivo,$descripcion);
       if (is_numeric($id_estudio) and $id_estudio>0) {
-        header("location: ".BASE_URL."estudios/modificar/".$id_estudio);
+        header("location: ".BASE_URL."conversacion/".$id_estudio);
       }else{
-        $params['msg'] = "Error al crear el estudio";
+        $params['msg'] = "Error al crear el estudio: ".$id_estudio;
         $this->render(__CLASS__,"back", $params);
       }
     }else{

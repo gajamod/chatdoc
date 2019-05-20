@@ -15,7 +15,7 @@ class conversacionModel{
             //Si existe token y area valida
             if ($this->areaValida($area) and !($this->existeTokenConversacion($token)) ){
                 //Crear conversacion (hilo) (Tomar datos de sesion existente)
-                $query = "INSERT INTO 'hilos' ('motivo', 'area', 'descripcion', 'paciente',token) VALUES (?,?,?,?,?)";
+                $query = "INSERT INTO hilos (motivo, area, descripcion, paciente,token) VALUES (?,?,?,?,?)";
                 $idc = id_query($query, 'sisis', $motivo, $area, $descripcion, $paciente,$token);
                 //Si se creo la conversacion
                 if (is_numeric($idc) and $idc>0){
@@ -32,9 +32,7 @@ class conversacionModel{
     }   
 
     public function registrarRespuesta($respuesta,$paciente,$token,$conversacion){
-        $nombre=htmlentities($nombre);
-        $area=htmlentities($area);
-        $descripcion=htmlentities($descripcion);
+        $respuesta=htmlentities($respuesta);
         // Si sesion valida
         //     Si existe conversacion y conversacion.paciente==paciente
         //         Si no Existe token en conversacion
@@ -52,6 +50,8 @@ class conversacionModel{
                 if (!($this->existeTokenRespuesta($token,$conversacion))) {
                     $query="INSERT INTO `respuestas`( `hilo`, `respuesta`,`paciente`,`token`) VALUES (?,?,?,?);";
                     $id=id_query($query,"isis",$conversacion,$respuesta,$paciente,$token);
+                    //mose("respuesta",$respuesta);
+                    //$id=2;
                     if (is_numeric($id) and $id>0) {
                         return $id;
                     } else {
@@ -97,7 +97,7 @@ class conversacionModel{
         $cant=mysqli_num_rows($results);
         if ($cant>=1) {
             $resp = array();
-            $resp['cantidad']=$cant;
+            //$resp['cantidad']=$cant;
             while ($r=mysqli_fetch_array($results)) {
                 if (is_numeric($r['medico'] ) and $r['medico']>0) {
                     $nom=$r['n_dr'];
@@ -106,7 +106,7 @@ class conversacionModel{
                     $nom=$r['n_pac'];
                     $tip=0;
                 }
-                $resp['registros'][$r['id']]= array(
+                $resp[$r['id']]= array(
                     'respuesta' => $r['respuesta']
                     ,'fecha' => $r['fecha_registro']
                     ,'tipo' => $tip
@@ -246,6 +246,36 @@ class conversacionModel{
 
     public function getInfo($conversacion){
         //Obtiene informacion de la conversacion
+        $query = "SELECT h.`id`, h.`motivo`, h.`area`, h.`descripcion`, h.`fechacreacion`, h.`estatus`, h.`paciente`, h.`medico`, p.nombre AS 'nombre_pac',m.nombre AS 'nombre_dr',a.nombre AS 'nombre_area'
+            FROM `hilos` h
+            LEFT JOIN medicos m ON h.`medico`=m.id
+            LEFT JOIN pacientes p ON h.`paciente`= p.id
+            LEFT JOIN areas a ON h.area=a.id
+            WHERE h.`id`=?";
+        $results = resultados_query($query, 'i', $conversacion);
+        $cant=mysqli_num_rows($results);
+        if ($cant>=1) {
+            $hilos = array();
+            while ($r=mysqli_fetch_array($results)) {
+                $hilos= array(
+
+                'motivo' => $r['motivo']
+                ,'fecha' => $r['fechacreacion']
+                ,'nombre_area' => $r['nombre_area']
+                ,'num_area' => $r['area']
+                ,'estatus' => $r['estatus']
+                ,'id' => $r['id']
+                ,'descripcion' => $r['descripcion']
+                ,'num_paciente' => $r['paciente']
+                ,'nombre_pac' => $r['nombre_pac']
+                ,'num_dr' => $r['medico']
+                ,'nombre_dr' => $r['nombre_dr']
+            );}
+            return $hilos;
+        }else{
+            return false;
+        }
+
     }
 }
 ?>
