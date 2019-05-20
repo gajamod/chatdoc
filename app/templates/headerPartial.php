@@ -14,9 +14,9 @@
       <li class="nav-item">
         <a class="nav-link btn btn-info" href="<?php echo BASE_URL ?>conversacion/nueva">Nueva Consulta</a>
       </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="#">Estadisticas</a>
-      </li>-->
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo BASE_URL ?>medico/">Ver Medicos</a>
+      </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <?php if (Session::valid_session()): ?>
