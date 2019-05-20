@@ -39,7 +39,6 @@
 		<div class="row">
 			<?php foreach ($resultados['registros'] as $id => $r): ?>
 				<?php 
-
 				switch ($r['num_area']) {
 				 	case 1:
 				 		$borde='info';
@@ -75,13 +74,17 @@
 				 } 
 				 
 				 	?>
-				<div class="card col-md-4">
-					<div class="card-body">
-						<h3 class="card-title"><a><?php echo $r['motivo']; ?></a> <a class=" float-right btn btn-<?php echo $estat; ?> disabled text-white"><?php echo $estatT; ?></a></h3>
-						<h4 class="card-subtitle mb-2 text-muted"><a><?php echo $r['nombre_area']; ?></a> <small class="text-right float-right"><?php echo $r['fecha']; ?></small></h4>
-						<hr class="bg-<?php echo $borde; ?>">
+				
+					<div class="card col-md-4">
+						<div class="card-body">
+						<a >
+							<h3 class="card-title"><a href="conversacion/<?php echo $id; ?>"><?php echo $r['motivo']; ?></a> <a class=" float-right btn btn-<?php echo $estat; ?> disabled text-white"><?php echo $estatT; ?></a></h3>
+							<h4 class="card-subtitle mb-2 text-muted"><a><?php echo $r['nombre_area']; ?></a> <small class="text-right float-right"><?php echo $r['fecha']; ?></small></h4>
+							<hr class="bg-<?php echo $borde; ?>">
+						</a>
+						</div>
 					</div>
-				</div>
+				
 			<?php endforeach ?>
 		</div>
 		

@@ -15,7 +15,7 @@ class conversacionModel{
             //Si existe token y area valida
             if ($this->areaValida($area) and !($this->existeTokenConversacion($token)) ){
                 //Crear conversacion (hilo) (Tomar datos de sesion existente)
-                $query = "INSERT INTO hilos (motivo, area, descripcion, paciente,token) VALUES (?,?,?,?,?)";
+                $query = "INSERT INTO hilos (motivo, area, descripcion, paciente,token,estatus) VALUES (?,?,?,?,?,1)";
                 $idc = id_query($query, 'sisis', $motivo, $area, $descripcion, $paciente,$token);
                 //Si se creo la conversacion
                 if (is_numeric($idc) and $idc>0){
@@ -129,13 +129,15 @@ class conversacionModel{
                 $query="SELECT h.id,h.motivo,h.area,a.nombre as 'nombre_area',h.fechacreacion,h.estatus  
                 FROM hilos h
                 inner join soport16_chatdoc.areas a on h.area=a.id
-                WHERE h.paciente=? and (h.area=?) and h.motivo like ?";
+                WHERE h.paciente=? and (h.area=?) and h.motivo like ?
+                ORDER BY id DESC";
                 $results=resultados_query($query,'iis',$paciente,$area,$text);
             } else {
                   $query="SELECT h.id,h.motivo,h.area,a.nombre as 'nombre_area',h.fechacreacion,h.estatus 
                 FROM hilos h
                 inner join soport16_chatdoc.areas a on h.area=a.id
-                WHERE h.paciente=? and h.motivo like ?";
+                WHERE h.paciente=? and h.motivo like ?
+                ORDER BY id DESC";
                 $results=resultados_query($query,'is',$paciente,$text);
             }
             $cant=mysqli_num_rows($results);

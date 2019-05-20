@@ -9,13 +9,23 @@
     if(is_array($respuestas)){
        ksort($respuestas); 
     }
-    
+    switch ($info['estatus']) {
+        case 1:
+            $estat='success';
+            $estatT="Activo";
+            break;
+        
+        default:
+            $estat='warning';
+            $estatT="Cerrado";
+            break;
+     } 
     
 
 ?>
 <div class="card">
     <div class="card-body">
-        <h4><a class="card-title float-left"></a><?php echo  $info['motivo']?>   <small class="card-subtitle text-muted float-right">#<?php echo  $info['id']?></small></h4>
+        <h4><a class="card-title float-left"></a><?php echo  $info['motivo']?>   <small class="card-subtitle text-muted float-right">#<?php echo  $info['id']?></small> <a class=" float-right btn btn-<?php echo $estat; ?> disabled text-white"><?php echo $estatT; ?></a></h4>
         <p class="card-text"><?php echo  $info['descripcion']?></p>
         <div class="table-responsive">
           <table class="table">
